@@ -68,34 +68,61 @@ function App() {
   };
 
   return (
-    <div className="main">
-      <h1>👤 CRUD with React + Express (Fetch API)</h1>
+    <div className="pt-75 min-h-screen bg-gray-900 flex flex-col items-center py-12 px-4 text-white">
+      <div className="max-w-lg w-full bg-gray-800 rounded-xl p-8 shadow-lg">
+        <h1 className="text-3xl font-bold text-center mb-6">
+          👤 CRUD with React + Express
+        </h1>
 
-      <div className="form">
-        <input
-          type="text"
-          placeholder="Enter name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <button onClick={handleSubmit}>
-          {editId ? "Update" : "Add"}
-        </button>
+        <div className="flex gap-2 mb-6">
+          <input
+            type="text"
+            placeholder="Enter name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="flex-1 p-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            onClick={handleSubmit}
+            className={`px-4 py-2 rounded-lg font-semibold transition ${
+              editId
+                ? "bg-yellow-500 hover:bg-yellow-600"
+                : "bg-blue-500 hover:bg-blue-600"
+            }`}
+          >
+            {editId ? "Update" : "Add"}
+          </button>
+        </div>
+
+        <ul className="space-y-2">
+          {Array.isArray(users) && users.length > 0 ? (
+            users.map((user) => (
+              <li
+                key={user.id}
+                className="flex justify-between items-center bg-gray-700 rounded-lg px-4 py-2"
+              >
+                <span className="text-lg">{user.name}</span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEdit(user)}
+                    className="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 rounded-lg text-sm font-medium"
+                  >
+                    ✏️ Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(user.id)}
+                    className="px-3 py-1 bg-red-500 hover:bg-red-600 rounded-lg text-sm font-medium"
+                  >
+                    🗑️ Delete
+                  </button>
+                </div>
+              </li>
+            ))
+          ) : (
+            <li className="text-center text-gray-400">No users yet.</li>
+          )}
+        </ul>
       </div>
-
-      <ul>
-        {Array.isArray(users) && users.length > 0 ? (
-          users.map((user) => (
-            <li key={user.id}>
-              {user.name}{" "}
-              <button onClick={() => handleEdit(user)}>✏️ Edit</button>{" "}
-              <button onClick={() => handleDelete(user.id)}>🗑️ Delete</button>
-            </li>
-          ))
-        ) : (
-          <li>No users yet.</li>
-        )}
-      </ul>
     </div>
   );
 }
